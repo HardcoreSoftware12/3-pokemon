@@ -159,14 +159,17 @@ fight.addEventListener('click',()=>{
     const cr2 = document.getElementById('card2')
 
     setTimeout(()=>{
-        const exp1 = cr1.querySelector('#experience').textContent
-        console.log(exp1);
-        const exp2 = cr2.querySelector('#experience').textContent
+        let exp1 = cr1.querySelector('#experience').textContent
+        console.log(typeof exp1);
+        exp1 = Number(exp1)
+        console.log(typeof exp1);
+        let  exp2 = cr2.querySelector('#experience').textContent
+        exp2 = Number(exp2)
         console.log(exp2);
         if(exp1 > exp2){
             score1+=1;
             document.getElementById('p1_score').textContent = `Score : ${score1}`
-        }else{
+        }else if(exp1 < exp2){
             score2+=1;
             document.getElementById('p2_score').textContent = `Score : ${score2}`
 
