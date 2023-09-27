@@ -2,9 +2,11 @@ console.log('hellp');
 
 const fight  = document.getElementById('fight')
 
-fight.addEventListener('click',()=>{
-    getPokemon();
-})
+
+let score1 =0
+let score2 =0
+
+
 var randomNum1;
 
 function getPokemon(){
@@ -58,17 +60,48 @@ function getPokemon(){
             // })
 }
 function displayPlayer1(result){
-    const topHeader = document.getElementById('card_header')
+    const card1 = document.querySelector('#card1');
+    card1.querySelector('#name').textContent = result.name;
+
+    fetch(result.url).then((response)=>{
+        return response.json();
+
+    }).then((urlData)=>{
+        console.log(urlData)
+        let abilities = urlData.abilities
+        console.log(abilities);
+        const img1 = document.createElement('img')
+        console.log(urlData.sprites.other.dream_world.front_default);
+        // let imgSrc = urlData.
+        img1.setAttribute('src',urlData.sprites.other.dream_world.front_default)
+        img1.style.width = '250px'
+        img1.style.height = '250px'
+        card1.querySelector('#img').innerHTML=''
+        card1.querySelector('#img').append(img1)
+        
+        card1.querySelector('#experience').textContent = urlData.base_experience
+
+        const abilis = card1.querySelector('#abilities')
+        abilis.innerHTML = '';
+        for(let i of abilities){
+            const li  = document.createElement('li')
+            li.textContent=''
+            li.textContent = i.ability.name
+            abilis.append(li)
+        }
+    
+    })
+        
+    console.log(result.name);
+
     const name =  document.getElementById('name')
     const score = document.getElementById('p1_score')
-    console.log(result.name);
-    name.textContent = result.name
     
    
 }
 
 function displayPlayer2(result){
-    const topHeader = document.getElementById('card_header')
+    // const topHeader = document.getElementById('card_header')
     const card2 = document.querySelector('#card2');
     card2.querySelector('#name').textContent = result.name;
 
@@ -85,12 +118,22 @@ function displayPlayer2(result){
         img1.setAttribute('src',urlData.sprites.other.dream_world.front_default)
         img1.style.width = '250px'
         img1.style.height = '250px'
-        // card2.querySelector('#img').innerHTML=''
+        card2.querySelector('#img').innerHTML=''
         card2.querySelector('#img').append(img1)
         
         card2.querySelector('#experience').textContent = urlData.base_experience
 
+        const abilis = card2.querySelector('#abilities')
+        abilis.innerHTML = '';
+        
+        for(let i of abilities){
+            const li  = document.createElement('li')
+            // li.textContent=''
+            li.textContent = i.ability.name
+            // abilis.append('')
+            abilis.append(li)
 
+        }
     
     })
         
@@ -108,3 +151,29 @@ player1.textContent = "Player-1"
 
 const player2 = document.getElementById('p2_name')
 player2.textContent = "Player-2"
+
+
+fight.addEventListener('click',()=>{
+    getPokemon();
+    const cr1 = document.getElementById('card1')
+    const cr2 = document.getElementById('card2')
+
+    setTimeout(()=>{
+        const exp1 = cr1.querySelector('#experience').textContent
+        console.log(exp1);
+        const exp2 = cr2.querySelector('#experience').textContent
+        console.log(exp2);
+        if(exp1 > exp2){
+            score1+=1;
+            document.getElementById('p1_score').textContent = `Score : ${score1}`
+        }else{
+            score2+=1;
+            document.getElementById('p2_score').textContent = `Score : ${score2}`
+
+        }
+
+    },1000)
+   
+    // console.log(card1);
+
+})
